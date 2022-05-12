@@ -40,7 +40,7 @@ const VerificationScreen = ({ history }) => {
       );
     console.log('data.token', data.token);
     localStorage.setItem("authToken", data.token);
-    localStorage.removeItem("email");
+    
 
       history.push("/");
     } catch (error) {

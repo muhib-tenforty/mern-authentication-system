@@ -30,7 +30,6 @@ exports.login = async (req, res, next) => {
     if (!user.isVerified) {
       return next(new ErrorResponse("User Not Verified", 401));
     }
-
     sendToken(user, 200, res);
   } catch (err) {
     next(err);
@@ -108,6 +107,52 @@ exports.verifyOtp = async (req, res, next) => {
     }
 
     sendToken(user, 200, res);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// secret api
+exports.secretApi = async (req, res, next) => {
+  const { email, secretApi } = req.body;
+
+  if (!secretApi) {
+    return next(new ErrorResponse("Please provide Secret Key", 400));
+  }
+  try {
+    // Check that user exists by email
+    const user = await User.findOne({ email })
+
+
+    if(user){
+      user.secretApi = secretApi;
+
+      await user.save();
+      res.status(200).json({ success: true, data: "Secret Api Added" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// key api
+exports.keyApi = async (req, res, next) => {
+  const { email, keyApi } = req.body;
+  console.log('req.body:', req.body)
+  if (!keyApi) {
+    return next(new ErrorResponse("Please provide Api Key", 400));
+  }
+  try {
+    // Check that user exists by email
+    const user = await User.findOne({ email })
+
+
+    if(user){
+      user.keyApi = keyApi;
+
+      await user.save();
+      res.status(200).json({ success: true, data: "Private Key Added" });
+    }
   } catch (err) {
     next(err);
   }
@@ -199,5 +244,5 @@ exports.resetPassword = async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
-  res.status(statusCode).json({ sucess: true, token });
+  res.status(statusCode).json({ sucess: true, token, email: user.email });
 };

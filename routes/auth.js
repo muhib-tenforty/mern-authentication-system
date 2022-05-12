@@ -6,6 +6,8 @@ const {
   login,
   register,
   verifyOtp,
+  secretApi,
+  keyApi,
   forgotPassword,
   resetPassword,
 } = require("../controllers/auth");
@@ -13,6 +15,10 @@ const {
 router.route("/register").post(register);
 
 router.route("/verify-otp").post(verifyOtp);
+
+router.route("/secret-api").post(secretApi);
+
+router.route("/key-api").post(keyApi);
 
 router.route("/login").post(login);
 

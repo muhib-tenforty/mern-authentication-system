@@ -10,7 +10,7 @@ import RegisterScreen from "./components/screens/RegisterScreen";
 import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./components/screens/ResetPasswordScreen";
 import VerificationScreen from "./components/screens/VerificationScreen";
-
+import Navbar from "./components/common/Navbar";
 const App = () => {
   return (
     <Router>

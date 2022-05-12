@@ -33,6 +33,12 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  secretApi: {
+    type: String
+  },
+  keyApi: {
+    type: String
+  },
 });
 
 UserSchema.pre("save", async function (next) {
@@ -42,6 +48,24 @@ UserSchema.pre("save", async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("secretApi")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.secretApi = await bcrypt.hash(this.secretApi, salt);
+  next();
+});
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("keyApi")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.keyApi = await bcrypt.hash(this.keyApi, salt);
   next();
 });
 
